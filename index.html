@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Contact Landing Page</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  body::before, body::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  body::before {
+    width: 500px;
+    height: 500px;
+    background: rgba(255,255,255,0.1);
+    top: -100px;
+    left: -100px;
+  }
+  body::after {
+    width: 700px;
+    height: 700px;
+    background: rgba(255,255,255,0.08);
+    bottom: -150px;
+    right: -150px;
+  }
+  .container {
+    background: rgba(255,255,255,0.95);
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .avatar-placeholder {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    animation: pulse 2s infinite;
+  }
+  .avatar-placeholder svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  h1 { margin-bottom: 20px; color: #333; }
+  p { margin-bottom: 30px; color: #555; font-size: 18px; line-height: 1.6; }
+  button {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    margin-bottom: 20px;
+  }
+  button:hover { background-color: #1ebe5d; }
+  button:active { transform: scale(0.97); }
+  .info-section { text-align: left; margin-top: 20px; }
+  .info-section h2 { color: #333; font-size: 20px; margin-bottom: 10px; }
+  .info-section ul { list-style-type: disc; padding-left: 20px; color: #555; }
+  .info-section ul li { margin-bottom: 8px; font-size: 16px; }
+  .float-icons { animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="avatar-placeholder">
+    <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="70" cy="70" r="70" fill="#25D366"/>
+      <text x="70" y="50" text-anchor="middle" font-size="48" font-weight="bold" fill="white" font-family="Arial">H</text>
+      <text x="70" y="85" text-anchor="middle" font-size="28" fill="white" font-family="Arial" class="float-icons">👜👕👟</text>
+      <text x="70" y="120" text-anchor="middle" font-size="14" fill="white" font-family="Arial" font-weight="bold">huchuanyun</text>
+    </svg>
+  </div>
+
+  <h1 id="title">We Are a Chinese Factory 🥰</h1>
+  <p id="description">Our products include bags, shoes, clothes, watches, and much more 🤩🥰 Click the button below to WhatsApp!</p>
+  <button id="whatsappBtn">WhatsApp</button>
+
+  <div class="info-section">
+    <h2>🚚 Shipping Process</h2>
+    <ul>
+      <li>We process your order within 24 hours.</li>
+      <li>Shipping via international courier (DHL, FedEx, UPS).</li>
+      <li>Tracking number provided after shipment.</li>
+    </ul>
+
+    <h2>💰 Payment Methods</h2>
+    <ul>
+      <li>We accept PayPal, Western Union, and Bank Transfer.</li>
+      <li>Payment confirmation required before shipment.</li>
+    </ul>
+
+    <h2>📩 Free Consultation & Quotation</h2>
+    <ul>
+      <li>Send us pictures of the product you need.</li>
+      <li>We provide free quotes and recommendations.</li>
+      <li>Consultation via WhatsApp for quick response.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// WhatsApp 多号码轮询，从 GitHub Pages 获取
+let links = [];
+let index = parseInt(localStorage.getItem('linkIndex')) || 0;
+
+// ✅ 这里是你 GitHub 仓库的 links.json URL
+fetch('https://q79314339-netizen.github.io/links.json/links.json')
+  .then(res => res.json())
+  .then(data => { links = data.links; })
+  .catch(err => console.error('Failed to load links.json', err));
+
+// 点击按钮轮询 WhatsApp
+document.getElementById('whatsappBtn').addEventListener('click', () => {
+  if (links.length === 0) {
+    alert('Loading links, please try again in a few seconds.');
+    return;
+  }
+  window.open(links[index], '_blank');
+  index = (index + 1) % links.length;
+  localStorage.setItem('linkIndex', index);
+});
+
+// 多语言支持
+const langText = {
+  en: { title: "We Are a Chinese Factory 🥰", desc: "Our products include bags, shoes, clothes, watches, and much more 🤩🥰 Click the button below to WhatsApp!" },
+  fr: { title: "Nous sommes une usine chinoise 🥰", desc: "Nos produits incluent des sacs, chaussures, vêtements, montres et bien plus 🤩🥰 Cliquez sur le bouton ci-dessous pour WhatsApp !" },
+  it: { title: "Siamo una fabbrica cinese 🥰", desc: "I nostri prodotti includono borse, scarpe, vestiti, orologi e molto altro 🤩🥰 Clicca il pulsante qui sotto per WhatsApp!" }
+};
+const countryToLang = { FR:"fr", BE:"fr", IT:"it", US:"en", GB:"en", CA:"en", AU:"en" };
+
+fetch("https://ipapi.co/json/")
+  .then(res => res.json())
+  .then(data => {
+    const lang = countryToLang[data.country] || "en";
+    document.getElementById("title").innerText = langText[lang].title;
+    document.getElementById("description").innerText = langText[lang].desc;
+  })
+  .catch(()=>{});
+</script>
+
+</body>
+</html>
